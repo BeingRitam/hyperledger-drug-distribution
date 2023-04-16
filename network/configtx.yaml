@@ -1,0 +1,220 @@
+Organizations:
+  - &OrdererOrg
+    Name: Orderer
+    ID: OrdererMSP
+    MSPDir: crypto-config/ordererOrganizations/pharma.net/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Writers:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+      Admins:
+        Type: Signature
+        Rule: "OR('OrdererMSP.member')"
+
+  - &manufacturer
+    Name: manufacturerMSP
+    ID: manufacturerMSP
+    MSPDir: crypto-config/peerOrganizations/manufacturer.pharma.net/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('manufacturerMSP.admin', 'manufacturerMSP.peer', 'manufacturerMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('manufacturerMSP.admin', 'manufacturerMSP.peer', 'manufacturerMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('manufacturerMSP.admin', 'manufacturerMSP.peer', 'manufacturerMSP.client')"
+    AnchorPeers:
+      - Host: peer0.manufacturer.pharma.net
+        Port: 7051
+
+  - &distributor
+    Name: distributorMSP
+    ID: distributorMSP
+    MSPDir: crypto-config/peerOrganizations/distributor.pharma.net/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('distributorMSP.admin', 'distributorMSP.peer', 'distributorMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('distributorMSP.admin', 'distributorMSP.peer', 'distributorMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('distributorMSP.admin', 'distributorMSP.peer', 'distributorMSP.client')"
+    AnchorPeers:
+      - Host: peer0.distributor.pharma.net
+        Port: 9051
+
+  - &retailer
+    Name: retailerMSP
+    ID: retailerMSP
+    MSPDir: crypto-config/peerOrganizations/retailer.pharma.net/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('retailerMSP.admin', 'retailerMSP.peer', 'retailerMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('retailerMSP.admin', 'retailerMSP.peer', 'retailerMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('retailerMSP.admin', 'retailerMSP.peer', 'retailerMSP.client')"
+    AnchorPeers:
+      - Host: peer0.retailer.pharma.net
+        Port: 11051
+
+  - &consumer
+    Name: consumerMSP
+    ID: consumerMSP
+    MSPDir: crypto-config/peerOrganizations/consumer.pharma.net/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('consumerMSP.admin', 'consumerMSP.peer', 'consumerMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('consumerMSP.admin', 'consumerMSP.peer', 'consumerMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('consumerMSP.admin', 'consumerMSP.peer', 'consumerMSP.client')"
+    AnchorPeers:
+      - Host: peer0.consumer.pharma.net
+        Port: 13051
+
+  - &transporter
+    Name: transporterMSP
+    ID: transporterMSP
+    MSPDir: crypto-config/peerOrganizations/transporter.pharma.net/msp
+    Policies:
+      Readers:
+        Type: Signature
+        Rule: "OR('transporterMSP.admin', 'transporterMSP.peer', 'transporterMSP.client')"
+      Writers:
+        Type: Signature
+        Rule: "OR('transporterMSP.admin', 'transporterMSP.peer', 'transporterMSP.client')"
+      Admins:
+        Type: Signature
+        Rule: "OR('transporterMSP.admin', 'transporterMSP.peer', 'transporterMSP.client')"
+    AnchorPeers:
+      - Host: peer0.transporter.pharma.net
+        Port: 15051
+
+#Capabilities
+Capabilities:
+  Channel: &ChannelCapabilities
+    V2_0: true
+  Orderer: &OrdererCapabilities
+    V2_0: true
+  Application: &ApplicationCapabilities
+    V2_5: true
+
+#Application
+Application: &ApplicationDefaults
+  Organizations:
+  Policies: &ApplicationDefaultPolicies
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "ANY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+  Capabilities:
+    <<: *ApplicationCapabilities
+
+#Orderer
+Orderer: &OrdererDefaults
+  OrdererType: etcdraft
+  Addresses:
+    - orderer.pharma.net:7050
+  EtcdRaft:
+        Consenters:
+        - Host: orderer.pharma.net
+          Port: 7050
+          ClientTLSCert: crypto-config/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/tls/server.crt
+          ServerTLSCert: crypto-config/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/tls/server.crt
+  BatchTimeout: 2s
+  BatchSize:
+    MaxMessageCount: 10
+    AbsoluteMaxBytes: 99 MB
+    PreferredMaxBytes: 512 KB
+  Organizations:
+  Capabilities: *OrdererCapabilities
+  Policies:
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    Admins:
+      Type: ImplicitMeta
+      Rule: "ANY Admins"
+    # BlockValidation specifies what signatures must be included in the block
+    # from the orderer for the peer to validate it.
+    BlockValidation:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+
+Channel: &ChannelDefaults
+  Policies:
+    # Who may invoke the 'Deliver' API
+    Readers:
+      Type: ImplicitMeta
+      Rule: "ANY Readers"
+    # Who may invoke the 'Broadcast' API
+    Writers:
+      Type: ImplicitMeta
+      Rule: "ANY Writers"
+    # By default, who may modify elements at this config level
+    Admins:
+      Type: ImplicitMeta
+      Rule: "ANY Admins"
+  Capabilities:
+    <<: *ChannelCapabilities
+
+#Profiles
+Profiles:
+  OrdererGenesis:
+    <<: *ChannelDefaults
+    Orderer:
+      <<: *OrdererDefaults
+      Organizations:
+        - *OrdererOrg
+      Capabilities:
+        <<: *OrdererCapabilities
+    Consortiums:
+      PharmaConsortium:
+        Organizations:
+          - *manufacturer
+          - *distributor
+          - *retailer
+          - *consumer
+          - *transporter
+
+  PharmaChannel:
+    Consortium: PharmaConsortium
+    <<: *ChannelDefaults
+    Application:
+      <<: *ApplicationDefaults
+      Organizations:
+        - *manufacturer
+        - *distributor
+        - *retailer
+        - *consumer
+        - *transporter
+      Capabilities:
+        <<: *ApplicationCapabilities
