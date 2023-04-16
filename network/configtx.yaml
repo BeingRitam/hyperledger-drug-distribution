@@ -111,7 +111,7 @@ Capabilities:
   Orderer: &OrdererCapabilities
     V2_0: true
   Application: &ApplicationCapabilities
-    V2_5: true
+    V2_0: true
 
 #Application
 Application: &ApplicationDefaults
@@ -141,11 +141,11 @@ Orderer: &OrdererDefaults
   Addresses:
     - orderer.pharma.net:7050
   EtcdRaft:
-        Consenters:
-        - Host: orderer.pharma.net
-          Port: 7050
-          ClientTLSCert: crypto-config/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/tls/server.crt
-          ServerTLSCert: crypto-config/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/tls/server.crt
+    Consenters:
+      - Host: orderer.pharma.net
+        Port: 7050
+        ClientTLSCert: crypto-config/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/tls/server.crt
+        ServerTLSCert: crypto-config/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/tls/server.crt
   BatchTimeout: 2s
   BatchSize:
     MaxMessageCount: 10

@@ -4,52 +4,55 @@ OrdererOrgs:
     EnableNodeOUs: true
     Specs:
       - Hostname: orderer
-        SANS:
-          - localhost
 PeerOrgs:
   - Name: manufacturer
     Domain: manufacturer.pharma.net
     EnableNodeOUs: true
     Template:
       Count: 2
-      SANS:
-        - localhost
     Users:
       Count: 1
+    Crypto:
+      CertificateAuthorities:
+        - ca.manufacturer.pharma.net
   - Name: distributor
     Domain: distributor.pharma.net
     EnableNodeOUs: true
     Template:
       Count: 2
-      SANS:
-        - localhost
     Users:
       Count: 1
+    Crypto:
+      CertificateAuthorities:
+        - ca.distributor.pharma.net
   - Name: retailer
     Domain: retailer.pharma.net
     EnableNodeOUs: true
     Template:
       Count: 2
-      SANS:
-        - localhost
     Users:
       Count: 1
+    Crypto:
+      CertificateAuthorities:
+        - ca.retailer.pharma.net
   - Name: consumer
     Domain: consumer.pharma.net
     EnableNodeOUs: true
     Template:
       Count: 2
-      SANS:
-        - localhost
     Users:
       Count: 1
+    Crypto:
+      CertificateAuthorities:
+        - ca.consumer.pharma.net
   - Name: transporter
     Domain: transporter.pharma.net
     EnableNodeOUs: true
     Template:
       Count: 2
-      SANS:
-        - localhost
     Users:
       Count: 1
+    Crypto:
+      CertificateAuthorities:
+        - ca.transporter.pharma.net
   
