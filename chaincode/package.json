@@ -3,26 +3,22 @@
   "version": "0.0.1",
   "description": "pharmanet Network",
   "main": "index.js",
-  "engines": {
-    "node": ">=8",
-    "npm": ">=5"
-  },
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
     "test": "nyc mocha test --recursive",
-    "start-man": "fabric-chaincode-node start --peer.address  peer0.manufacturer.pharma-network.com:7053 --chaincode-id-name pharmanet:1.1",
-    "start-dis": "fabric-chaincode-node start --peer.address  peer0.distributor.pharma-network.com:9053 --chaincode-id-name pharmanet:1.1",
-    "start-ret": "fabric-chaincode-node start --peer.address  peer0.retailer.pharma-network.com:11053 --chaincode-id-name pharmanet:1.1",
-    "start-tra": "fabric-chaincode-node start --peer.address  peer0.transporter.pharma-network.com:15053 --chaincode-id-name pharmanet:1.1",
+    "start-man": "fabric-chaincode-node start --peer.address  peer0.manufacturer.pharma.net:7053 --chaincode-id-name pharmanet:1.1",
+    "start-dis": "fabric-chaincode-node start --peer.address  peer0.distributor.pharma.net:9053 --chaincode-id-name pharmanet:1.1",
+    "start-ret": "fabric-chaincode-node start --peer.address  peer0.retailer.pharma.net:11053 --chaincode-id-name pharmanet:1.1",
+    "start-tra": "fabric-chaincode-node start --peer.address  peer0.transporter.pharma.net:15053 --chaincode-id-name pharmanet:1.1",
     "start": "fabric-chaincode-node start",
     "mocha": "mocha test --recursive"
   },
   "engineStrict": true,
-  "author": "Avi",
+  "author": "Ritam Das",
   "dependencies": {
-    "fabric-contract-api": "~1.4.2",
-    "fabric-shim": "~1.4.2"
+    "fabric-contract-api": "^2.5.2",
+    "fabric-shim": "^2.5.2"
   },
   "devDependencies": {
     "chai": "^4.1.2",

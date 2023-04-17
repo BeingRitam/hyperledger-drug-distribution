@@ -47,6 +47,7 @@ services:
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.manufacturer.pharma.net:8051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.manufacturer.pharma.net:7051
       - CORE_PEER_LOCALMSPID=manufacturerMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manufacturer.pharma.net/users/Admin@manufacturer.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/manufacturer.pharma.net/peers/peer0.manufacturer.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -70,6 +71,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.manufacturer.pharma.net:8051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.manufacturer.pharma.net:7051
       - CORE_PEER_LOCALMSPID=manufacturerMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/manufacturer.pharma.net/users/Admin@manufacturer.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/manufacturer.pharma.net/peers/peer1.manufacturer.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -94,6 +96,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.distributor.pharma.net:9051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.distributor.pharma.net:10051
       - CORE_PEER_LOCALMSPID=distributorMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/distributor.pharma.net/users/Admin@distributor.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/distributor.pharma.net/peers/peer0.distributor.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -117,6 +120,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.distributor.pharma.net:10051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.distributor.pharma.net:9051
       - CORE_PEER_LOCALMSPID=distributorMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/distributor.pharma.net/users/Admin@distributor.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/distributor.pharma.net/peers/peer1.distributor.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -140,6 +144,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.retailer.pharma.net:11051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.retailer.pharma.net:12051
       - CORE_PEER_LOCALMSPID=retailerMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/retailer.pharma.net/users/Admin@retailer.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/retailer.pharma.net/peers/peer0.retailer.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -163,6 +168,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.retailer.pharma.net:12051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.retailer.pharma.net:11051
       - CORE_PEER_LOCALMSPID=retailerMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/retailer.pharma.net/users/Admin@retailer.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/retailer.pharma.net/peers/peer1.retailer.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -186,6 +192,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.consumer.pharma.net:13051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.consumer.pharma.net:14051
       - CORE_PEER_LOCALMSPID=consumerMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/consumer.pharma.net/users/Admin@consumer.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/consumer.pharma.net/peers/peer0.consumer.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -209,6 +216,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.consumer.pharma.net:14051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.consumer.pharma.net:13051
       - CORE_PEER_LOCALMSPID=consumerMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/consumer.pharma.net/users/Admin@consumer.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/consumer.pharma.net/peers/peer1.consumer.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -232,6 +240,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.transporter.pharma.net:15051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.transporter.pharma.net:16051
       - CORE_PEER_LOCALMSPID=transporterMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/transporter.pharma.net/users/Admin@transporter.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/transporter.pharma.net/peers/peer0.transporter.pharma.net/msp:/etc/hyperledger/fabric/msp
@@ -255,6 +264,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.transporter.pharma.net:16051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.transporter.pharma.net:15051
       - CORE_PEER_LOCALMSPID=transporterMSP
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/transporter.pharma.net/users/Admin@transporter.pharma.net/msp
     volumes:
       - /var/run/:/host/var/run/
       - ../crypto-config/peerOrganizations/transporter.pharma.net/peers/peer1.transporter.pharma.net/msp:/etc/hyperledger/fabric/msp

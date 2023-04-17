@@ -37,7 +37,7 @@ createChannel() {
   setGlobals 0 'manufacturer'
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer channel create -o orderer.pharma.net:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx >&log.txt
+    peer channel create -o orderer.pharma.net:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx --outputBlock "./channel-artifacts/$CHANNEL_NAME.block">&log.txt
     res=$?
     set +x
   else
