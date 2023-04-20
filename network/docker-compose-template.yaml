@@ -215,6 +215,7 @@ services:
       #  - ./../chaincode-advanced/:/opt/gopath/src/github.com/hyperledger/fabric/peer/chaincode-advanced/
       - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
       - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
+      - ./config/core.yaml:/var/hyperledger/fabric/config/core.yaml
       - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
     depends_on:
       - ca.manufacturer.pharma.net
@@ -257,6 +258,7 @@ services:
     volumes:
       - /var/run/:/host/var/run/
       - ./../chaincode:/opt/gopath/src/chaincode
+      - ./config/core.yaml:/var/hyperledger/fabric/config/core.yaml
       # - ./../chaincode-advanced:/opt/gopath/src/chaincode-advanced
       - ./crypto-config:/opt/gopath/src/crypto
     networks:

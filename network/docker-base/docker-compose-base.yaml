@@ -28,6 +28,7 @@ services:
       - ../channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
       - ../crypto-config/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/msp:/var/hyperledger/orderer/msp
       - ../crypto-config/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/tls/:/var/hyperledger/orderer/tls
+      - ../config/core.yaml:/var/hyperledger/fabric/config/core.yaml
       - orderer.pharma.net:/var/hyperledger/production/orderer
     ports:
       - 7050:7050

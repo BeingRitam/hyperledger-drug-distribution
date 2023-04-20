@@ -4,12 +4,16 @@ OrdererOrgs:
     EnableNodeOUs: true
     Specs:
       - Hostname: orderer
+        SANS:
+          - localhost
 PeerOrgs:
   - Name: manufacturer
     Domain: manufacturer.pharma.net
     EnableNodeOUs: true
     Template:
       Count: 2
+      SANS:
+          - localhost
     Users:
       Count: 1
     Crypto:
@@ -20,6 +24,8 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 2
+      SANS:
+          - localhost
     Users:
       Count: 1
     Crypto:
@@ -30,6 +36,8 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 2
+      SANS:
+          - localhost
     Users:
       Count: 1
     Crypto:
@@ -40,6 +48,8 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 2
+      SANS:
+          - localhost
     Users:
       Count: 1
     Crypto:
@@ -50,6 +60,8 @@ PeerOrgs:
     EnableNodeOUs: true
     Template:
       Count: 2
+      SANS:
+          - localhost
     Users:
       Count: 1
     Crypto:

@@ -4,6 +4,13 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+# Color Coding for Terminal
+C_RESET='\033[0m'
+C_RED='\033[0;31m'
+C_GREEN='\033[0;32m'
+C_BLUE='\033[0;34m'
+C_YELLOW='\033[1;33m'
+
 # This is a collection of bash functions used by different scripts
 ORDERER_CA=${PWD}/crypto/ordererOrganizations/pharma.net/orderers/orderer.pharma.net/msp/tlscacerts/tlsca.pharma.net-cert.pem
 PEER0_MANUFACTURER_CA=${PWD}/crypto/peerOrganizations/manufacturer.pharma.net/peers/peer0.manufacturer.pharma.net/tls/ca.crt
@@ -137,7 +144,7 @@ installChaincode() {
   setGlobals "$PEER" "$ORG"
   VERSION=${3:-1.0}
   set -x
-  peer chaincode install -n pharmanet -v "${VERSION}" -l "${LANGUAGE}" -p "${CC_SRC_PATH}" >&log.txt
+  peer lifecycle chaincode install $PACKAGE_NAME >&log.txt
   res=$?
   set +x
   cat log.txt
@@ -261,3 +268,39 @@ chaincodeInvoke() {
   echo "===================== Invoke transaction successful on $PEERS on channel '$CHANNEL_NAME' ===================== "
   echo
 }
+
+# println echos string
+function println() {
+  echo -e "$1"
+}
+
+# errorln echos i red color
+function errorln() {
+  println "${C_RED}${1}${C_RESET}"
+}
+
+# successln echos in green color
+function successln() {
+  println "${C_GREEN}${1}${C_RESET}"
+}
+
+# infoln echos in blue color
+function infoln() {
+  println "${C_BLUE}${1}${C_RESET}"
+}
+
+# warnln echos in yellow color
+function warnln() {
+  println "${C_YELLOW}${1}${C_RESET}"
+}
+
+# fatalln echos in red color and exits with fail status
+function fatalln() {
+  errorln "$1"
+  exit 1
+}
+
+export -f errorln
+export -f successln
+export -f infoln
+export -f warnln
