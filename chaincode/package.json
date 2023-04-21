@@ -1,6 +1,6 @@
 {
   "name": "pharmanet",
-  "version": "0.0.1",
+  "version": "1.1",
   "description": "pharmanet Network",
   "main": "index.js",
   "scripts": {

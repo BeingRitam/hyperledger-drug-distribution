@@ -163,7 +163,7 @@ function updateChaincode() {
 
 function installChaincode() {
   checkPrereqs
-  docker exec cli scripts/installChaincode.sh "$CHANNEL_NAME" "$CLI_DELAY" "$LANGUAGE" "$VERSION_NO" "$TYPE"
+  docker exec cli scripts/installChaincode.sh "$CHANNEL_NAME" "$CLI_DELAY" "$LANGUAGE" "$VERSION_NO" "$TYPE" "$CC_NAME" "$CC_SEQ"
 }
 
 # Tear down running network
@@ -370,8 +370,12 @@ CLI_TIMEOUT=15
 CLI_DELAY=5
 # channel name defaults to "pharmachannel"
 CHANNEL_NAME="pharmachannel"
+# chaincode name
+CC_NAME="pharmanet"
 # version for updating chaincode
 VERSION_NO=1.1
+# Sqeucne Number
+CC_SEQ=1
 # type of chaincode to be installed
 TYPE="basic"
 # use this as the default docker-compose yaml definition

@@ -269,6 +269,34 @@ chaincodeInvoke() {
   echo
 }
 
+# parsePeerConnectionParameters $@
+# Helper function that sets the peer connection parameters for a chaincode
+# operation
+parsePeerConnectionParameters() {
+  PEER_CONN_PARMS=()
+  PEERS=""
+  while [ "$#" -gt 0 ]; do
+    ORG_NAME=$(echo $ORGS | cut -d " " -f $1)
+    setGlobals 0 $ORG_NAME
+    PEER=$CORE_PEER_ADDRESS
+    PEER=${PEER%%:*}
+    ## Set peer addresses
+    if [ -z "$PEERS" ]
+    then
+	PEERS="$PEER"
+    else
+	PEERS="$PEERS $PEER"
+    fi
+    PEER_CONN_PARMS=("${PEER_CONN_PARMS[@]}" --peerAddresses $CORE_PEER_ADDRESS)
+    ## Set path to TLS certificate
+    CA=PEER0_ORG$1_CA
+    TLSINFO=(--tlsRootCertFiles $CORE_PEER_TLS_ROOTCERT_FILE)
+    PEER_CONN_PARMS=("${PEER_CONN_PARMS[@]}" "${TLSINFO[@]}")
+    # shift by one to get to the next organization
+    shift
+  done
+}
+
 # println echos string
 function println() {
   echo -e "$1"

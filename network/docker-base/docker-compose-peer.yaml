@@ -16,6 +16,6 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
     volumes:
       - ../crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto
-      - ../config/core.yaml:/var/hyperledger/fabric/config/core.yaml
+      - /var/run/docker.sock:/host/var/run/docker.sock
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start #--peer-chaincodedev
