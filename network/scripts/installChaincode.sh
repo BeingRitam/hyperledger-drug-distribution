@@ -174,7 +174,7 @@ commitChaincodeDefinition 1 2 3 4 5
 
 # Instantiate chaincode on the channel using peer0.manufacturer
 echo "Instantiating chaincode on channel using peer0.manufacturer.pharma.net ..."
-instantiateChaincode 0 'manufacturer' $VERSION
+chaincodeInvoke 1 2 3 4 5
 
 echo
 echo "========= All GOOD, Chaincode CERTNET Is Now Installed & Instantiated On pharma Network =========== "

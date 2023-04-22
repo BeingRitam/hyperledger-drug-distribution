@@ -2,5 +2,8 @@ network/channel-artifacts/
 network/crypto-config/
 network/log.txt
 chaincode/node_modules/
+application/node_modules/
+application/dist/
+application/package-lock.json
 chaincode/package-lock.json
 .DS_Store
