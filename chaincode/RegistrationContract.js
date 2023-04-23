@@ -4,7 +4,7 @@ const {Contract} = require("fabric-contract-api");
 class RegistrationContract extends Contract {
   constructor() {
     //name of the Smart Contract => registration
-    super("org.pharma-network.registration");
+    super("pharma.net.registration");
   }
   //All the custom functions are listed below
 
@@ -28,7 +28,7 @@ class RegistrationContract extends Contract {
     try {
       //create composite key companyidy
       const companyIdKey = ctx.stub.createCompositeKey(
-        "org.pharma-network.companyId",
+        "pharma.net.companyId",
         [companyCRN, companyName]
       );
 

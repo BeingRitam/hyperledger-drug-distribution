@@ -1,0 +1,273 @@
+name: pharma-network
+
+x-type: h1fv1
+
+description: "pharma-network"
+
+version: '1.0'
+
+client:
+  organization: retailer
+  connection:
+    timeout:
+      peer:
+        endorser: 300
+        eventHub: 300
+        eventReg: 300
+      orderer: 300
+
+channels:
+  pharmachannel:
+    orderers:
+      - orderer.pharma.net
+    peers:
+      peer0.manufacturer.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.manufacturer.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.distributor.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.distributor.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.retailer.pharma.net:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer1.retailer.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.consumer.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.consumer.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer0.transporter.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+      peer1.transporter.pharma.net:
+        endorsingPeer: false
+        chaincodeQuery: false
+        ledgerQuery: true
+        eventSource: false
+organizations:
+  manufacturer:
+    mspid: manufacturerMSP
+    peers:
+      - peer0.manufacturer.pharma.net
+      - peer1.manufacturer.pharma.net
+    certificateAuthorities:
+      - ca.manufacturer.pharma.net
+
+  distributor:
+    mspid: distributirMSP
+    peers:
+      - peer0.distributor.pharma.net
+      - peer1.distributor.pharma.net
+    certificateAuthorities:
+      - ca.distributor.pharma.net
+
+  retailer:
+    mspid: retailerMSP
+    peers:
+      - peer0.retailer.pharma.net
+      - peer1.retailer.pharma.net
+    certificateAuthorities:
+      - ca.retailer.pharma.net
+
+  consumer:
+    mspid: consumerMSP
+    peers:
+      - peer0.consumer.pharma.net
+      - peer1.consumer.pharma.net
+    certificateAuthorities:
+      - ca.consumer.pharma.net
+
+  transporter:
+    mspid: transporterMSP
+    peers:
+      - peer0.transporter.pharma.net
+      - peer1.transporter.pharma.net
+    certificateAuthorities:
+      - ca.transporter.pharma.net
+
+orderers:
+  orderer.pharma.net:
+    url: grpcs://localhost:7050
+    grpcOptions:
+      ssl-target-name-override: orderer.pharma.net
+    tlsCACerts:
+      path: ./../network/crypto-config/ordererOrganizations/pharma.net/msp/tlscacerts/tlsca.pharma.net-cert.pem
+
+peers:
+  peer0.manufacturer.pharma.net:
+    url: grpcs://localhost:7051
+    grpcOptions:
+      ssl-target-name-override: peer0.manufacturer.pharma.net
+      hostnameOverride: peer0.manufacturer.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/manufacturer.pharma.net/peers/peer0.manufacturer.pharma.net/msp/tlscacerts/tlsca.manufacturer.pharma.net-cert.pem
+
+  peer1.manufacturer.pharma.net:
+    url: grpcs://localhost:8051
+    grpcOptions:
+      ssl-target-name-override: peer1.manufacturer.pharma.net
+      hostnameOverride: peer1.manufacturer.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/manufacturer.pharma.net/peers/peer1.manufacturer.pharma.net/msp/tlscacerts/tlsca.manufacturer.pharma.net-cert.pem
+
+  peer0.distributor.pharma.net:
+    url: grpcs://localhost:9051
+    grpcOptions:
+      ssl-target-name-override: peer0.distributor.pharma.net
+      hostnameOverride: peer0.distributor.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/distributor.pharma.net/peers/peer0.distributor.pharma.net/msp/tlscacerts/tlsca.distributor.pharma.net-cert.pem
+
+  peer1.distributor.pharma.net:
+    url: grpcs://localhost:10051
+    grpcOptions:
+      ssl-target-name-override: peer1.distributor.pharma.net
+      hostnameOverride: peer1.distributor.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/distributor.pharma.net/peers/peer1.distributor.pharma.net/msp/tlscacerts/tlsca.distributor.pharma.net-cert.pem
+
+  peer0.retailer.pharma.net:
+    url: grpcs://localhost:11051
+    grpcOptions:
+      ssl-target-name-override: peer0.retailer.pharma.net
+      hostnameOverride: peer0.retailer.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/retailer.pharma.net/peers/peer0.retailer.pharma.net/msp/tlscacerts/tlsca.retailer.pharma.net-cert.pem
+
+  peer1.retailer.pharma.net:
+    url: grpcs://localhost:12051
+    grpcOptions:
+      ssl-target-name-override: peer1.retailer.pharma.net
+      hostnameOverride: peer1.retailer.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/retailer.pharma.net/peers/peer1.retailer.pharma.net/msp/tlscacerts/tlsca.retailer.pharma.net-cert.pem
+
+  peer0.consumer.pharma.net:
+    url: grpcs://localhost:13051
+    grpcOptions:
+      ssl-target-name-override: peer0.consumer.pharma.net
+      hostnameOverride: peer0.consumer.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/consumer.pharma.net/peers/peer0.consumer.pharma.net/msp/tlscacerts/tlsca.consumer.pharma.net-cert.pem
+
+  peer1.consumer.pharma.net:
+    url: grpcs://localhost:14051
+    grpcOptions:
+      ssl-target-name-override: peer1.consumer.pharma.net
+      hostnameOverride: peer1.consumer.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/consumer.pharma.net/peers/peer1.consumer.pharma.net/msp/tlscacerts/tlsca.consumer.pharma.net-cert.pem
+
+  peer0.transporter.pharma.net:
+    url: grpcs://localhost:15051
+    grpcOptions:
+      ssl-target-name-override: peer0.transporter.pharma.net
+      hostnameOverride: peer0.transporter.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/transporter.pharma.net/peers/peer0.transporter.pharma.net/msp/tlscacerts/tlsca.transporter.pharma.net-cert.pem
+
+  peer1.transporter.pharma.net:
+    url: grpcs://localhost:16051
+    grpcOptions:
+      ssl-target-name-override: peer1.transporter.pharma.net
+      hostnameOverride: peer1.transporter.pharma.net
+      request-timeout: 120001
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/transporter.pharma.net/peers/peer1.transporter.pharma.net/msp/tlscacerts/tlsca.transporter.pharma.net-cert.pem
+
+certificateAuthorities:
+  ca.manufacturer.pharma.net:
+    url: http://localhost:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/manufacturer.pharma.net/ca/ca.manufacturer.pharma.net-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.manufacturer.pharma.net
+
+  ca.distributor.pharma.net:
+    url: http://localhost:8054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/distributor.pharma.net/ca/ca.distributor.pharma.net-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.distributor.pharma.net
+
+  ca.retailer.pharma.net:
+    url: http://localhost:9054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/retailer.pharma.net/ca/ca.retailer.pharma.net-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.retailer.pharma.net
+
+  ca.consumer.pharma.net:
+    url: http://localhost:10054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/consumer.pharma.net/ca/ca.consumer.pharma.net-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.consumer.pharma.net
+
+  ca.transporter.pharma.net:
+    url: http://localhost:11054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: ./../network/crypto-config/peerOrganizations/transporter.pharma.net/ca/ca.transporter.pharma.net-cert.pem
+
+    registrar:
+      - enrollId: admin
+        enrollSecret: adminpw
+    caName: ca.transporter.pharma.net

@@ -4,6 +4,8 @@ network/log.txt
 chaincode/node_modules/
 application/node_modules/
 application/dist/
+application/addToWalletForAllOrg/dist/
+application/identity/
 application/package-lock.json
 chaincode/package-lock.json
 .DS_Store

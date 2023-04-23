@@ -28,6 +28,9 @@ Organizations:
       Admins:
         Type: Signature
         Rule: "OR('manufacturerMSP.admin', 'manufacturerMSP.peer', 'manufacturerMSP.client')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('manufacturerMSP.admin', 'manufacturerMSP.peer', 'manufacturerMSP.client')"
     AnchorPeers:
       - Host: peer0.manufacturer.pharma.net
         Port: 7051
@@ -44,6 +47,9 @@ Organizations:
         Type: Signature
         Rule: "OR('distributorMSP.admin', 'distributorMSP.peer', 'distributorMSP.client')"
       Admins:
+        Type: Signature
+        Rule: "OR('distributorMSP.admin', 'distributorMSP.peer', 'distributorMSP.client')"
+      Endorsement:
         Type: Signature
         Rule: "OR('distributorMSP.admin', 'distributorMSP.peer', 'distributorMSP.client')"
     AnchorPeers:
@@ -64,6 +70,9 @@ Organizations:
       Admins:
         Type: Signature
         Rule: "OR('retailerMSP.admin', 'retailerMSP.peer', 'retailerMSP.client')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('retailerMSP.admin', 'retailerMSP.peer', 'retailerMSP.client')"
     AnchorPeers:
       - Host: peer0.retailer.pharma.net
         Port: 11051
@@ -82,6 +91,9 @@ Organizations:
       Admins:
         Type: Signature
         Rule: "OR('consumerMSP.admin', 'consumerMSP.peer', 'consumerMSP.client')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('consumerMSP.admin', 'consumerMSP.peer', 'consumerMSP.client')"
     AnchorPeers:
       - Host: peer0.consumer.pharma.net
         Port: 13051
@@ -98,6 +110,9 @@ Organizations:
         Type: Signature
         Rule: "OR('transporterMSP.admin', 'transporterMSP.peer', 'transporterMSP.client')"
       Admins:
+        Type: Signature
+        Rule: "OR('transporterMSP.admin', 'transporterMSP.peer', 'transporterMSP.client')"
+      Endorsement:
         Type: Signature
         Rule: "OR('transporterMSP.admin', 'transporterMSP.peer', 'transporterMSP.client')"
     AnchorPeers:
@@ -126,6 +141,9 @@ Application: &ApplicationDefaults
     Admins:
       Type: ImplicitMeta
       Rule: "ANY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
     Endorsement:
       Type: ImplicitMeta
       Rule: "MAJORITY Endorsement"

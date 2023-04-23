@@ -7,7 +7,7 @@ const {
 class TransferDrug extends Contract {
     constructor() {
         //name of the Smart Contract => registration
-        super("org.pharma-network.transferDrug");
+        super("pharma.net.transferDrug");
     }
     //All the custom functions are listed below
 
@@ -30,20 +30,20 @@ class TransferDrug extends Contract {
 
     async createPO(ctx, buyerCRN, sellerCRN, drugName, quantity) {
         try {
-            const poIDKey = ctx.stub.createCompositeKey("org.pharma-network.poIDKey", [
+            const poIDKey = ctx.stub.createCompositeKey("pharma.net.poIDKey", [
                 buyerCRN,
                 drugName,
             ]);
 
             //creating partial composite key for buyer and seller org to fetch details of both orgs
             const buyerCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "org.pharma-network.companyId",
+                "pharma.net.companyId",
                 [buyerCRN]
             );
             let buyerKey = await buyerCompKey.next();
 
             const sellerCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "org.pharma-network.companyId",
+                "pharma.net.companyId",
                 [sellerCRN]
             );
             let sellerKey = await sellerCompKey.next();
@@ -111,13 +111,13 @@ class TransferDrug extends Contract {
         //creating comp key for shipment to store shipment onj on ledger
         try {
             const shipmentKey = await ctx.stub.createCompositeKey(
-                "org.pharma-network.shipmentKey",
+                "pharma.net.shipmentKey",
                 [buyerCRN, drugName]
             );
 
             //partial key of drug to update drug owner
             let poIDCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "org.pharma-network.poIDKey",
+                "pharma.net.poIDKey",
                 [buyerCRN]
             );
 
@@ -130,7 +130,7 @@ class TransferDrug extends Contract {
             let poIDDetails = JSON.parse(poIDBuffer.toString());
 
             const transporterCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "org.pharma-network.companyId",
+                "pharma.net.companyId",
                 [transporterCRN]
             );
             let transporterKey = await transporterCompKey.next();
@@ -143,7 +143,7 @@ class TransferDrug extends Contract {
                 try {
                     for (let i = 0; i < listOfAssetArray.length; i++) {
                         let drugCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                            "org.pharma-network.productIDKey",
+                            "pharma.net.productIDKey",
                             [listOfAssetArray[i]]
                         );
                         let drugKey = await drugCompKey.next();
@@ -203,7 +203,7 @@ class TransferDrug extends Contract {
                 };
             }
             const shipmentKey = await ctx.stub.createCompositeKey(
-                "org.pharma-network.shipmentKey",
+                "pharma.net.shipmentKey",
                 [buyerCRN, drugName]
             );
 
@@ -216,7 +216,7 @@ class TransferDrug extends Contract {
             shipmentDetail.status = "delivered";
 
             const buyerCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "org.pharma-network.companyId",
+                "pharma.net.companyId",
                 [buyerCRN]
             );
             let buyerKey = await buyerCompKey.next();
@@ -264,7 +264,7 @@ class TransferDrug extends Contract {
         try {
             //getting retailer composite key
             const retailerCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "org.pharma-network.companyId",
+                "pharma.net.companyId",
                 [retailerCRN]
             );
             let companyKey = await retailerCompKey.next();
@@ -272,7 +272,7 @@ class TransferDrug extends Contract {
 
             //getting Drug composite key
             const drugKey = await ctx.stub.createCompositeKey(
-                "org.pharma-network.productIDKey",
+                "pharma.net.productIDKey",
                 [serialNo, drugName]
             );
             let drugBuffer = await ctx.stub.getState(drugKey).catch((err) => {

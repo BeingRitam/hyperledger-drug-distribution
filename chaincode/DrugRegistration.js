@@ -3,7 +3,7 @@ const {Contract} = require("fabric-contract-api");
 
 class DrugRegistrationContract extends Contract {
     constructor() {
-        super("org.pharma-network.drugRegistration");
+        super("pharma.net.drugRegistration");
     }
 
     async instantiate(ctx) {
@@ -31,12 +31,12 @@ class DrugRegistrationContract extends Contract {
             }
             //composite key for storing drug
             const productIDKey = ctx.stub.createCompositeKey(
-                "org.pharma-network.productIDKey",
+                "pharma.net.productIDKey",
                 [serialNo, drugName]
             );
             //fetching manufacturer org details from the ledger using partial composite key 
             let manufacturerCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "org.pharma-network.companyId",
+                "pharma.net.companyId",
                 [companyCRN]
             );
             //manuKey hold the return object from the itterator manuKey.value.key hold the composite key of the Manufacturer org

@@ -7,7 +7,7 @@ const {
 class ViewLifeCycle extends Contract {
   constructor() {
     //name of the Smart Contract => registration
-    super("org.pharma-network.viewLifeCycle");
+    super("pharma.net.viewLifeCycle");
   }
 
   //All the custom functions are listed below
@@ -32,7 +32,7 @@ class ViewLifeCycle extends Contract {
   async viewHistory(ctx, drugName, serialNo) {
     try {
       const productIDKey = ctx.stub.createCompositeKey(
-        "org.pharma-network.productIDKey",
+        "pharma.net.productIDKey",
         [serialNo, drugName]
       );
 
@@ -81,7 +81,7 @@ class ViewLifeCycle extends Contract {
   async viewDrugCurrentState(ctx, drugName, serialNo) {
     try {
       const productIDKey = ctx.stub.createCompositeKey(
-        "org.pharma-network.productIDKey",
+        "pharma.net.productIDKey",
         [serialNo, drugName]
       );
       let dataBuffer = await ctx.stub.getState(productIDKey).catch((err) => {
