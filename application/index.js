@@ -28,24 +28,22 @@ app.get('/', (req, res) => res.send("Hello this is an App for Pharma Network Reg
 
 
 app.post('/company', (req, res) => {
-	registerEntity.execute.createCompanyEntity(req.body.companyCRN, req.body.companyName, req.body.location, req.body.organisationRole).then((company) => {
-			console.log('Registering a Company');
-			var result;
+	registerEntity.execute.createCompanyEntity(req.body.companyCRN, req.body.companyName, req.body.location, req.body.organisationRole).then((companyObj) => {
 			//if the return object contains error property then return status = failure 
 			//if return object doesn't have error property then return status = success
 			//returnObject.errorTace property will print more detailed error or trace logs
-			if (company.error) {
-				result = {
+			if (companyObj.error) {
+				var result = {
 					status: 'Failure',
 					message: 'Error while registering the company, condition to register company not fullfilled',
-					error: company.error,
-					errorTrace: company.errorTrace
+					error: companyObj.error,
+					errorTrace: companyObj.errorTrace
 				};
 			} else {
-				result = {
+				var result = {
 					status: 'success',
 					message: 'Company Registered',
-					company: company
+					company: companyObj
 				};
 			}
 			res.json(result);
@@ -61,21 +59,19 @@ app.post('/company', (req, res) => {
 })
 
 app.post('/drug', (req, res) => {
-	registerEntity.execute.createDrugEntity(req.body.drugName, req.body.serialNo, req.body.mfgDate, req.body.expDate, req.body.companyCRN).then((drug) => {
-			console.log('Adding Drug');
-			var result;
-			if (drug.error) {
-				result = {
+	registerEntity.execute.createDrugEntity(req.body.drugName, req.body.serialNo, req.body.mfgDate, req.body.expDate, req.body.companyCRN).then((drugObj) => {
+			if (drugObj.error) {
+				var result = {
 					status: 'Failure',
 					message: 'Error while adding the drug',
-					error: drug.error,
-					errorTrace: drug.errorTrace
+					error: drugObj.error,
+					errorTrace: drugObj.errorTrace
 				};
 			} else {
-				result = {
+				var result = {
 					status: 'success',
-					message: 'Drug Added successfully',
-					drug: drug
+					message: 'Drug added successfully',
+					drug: drugObj
 				};
 			}
 			res.json(result);
@@ -92,7 +88,6 @@ app.post('/drug', (req, res) => {
 
 app.post('/purchaseOrder', (req, res) => {
 	requisition.execute.createPO(req.body.buyerCRN, req.body.sellerCRN, req.body.drugName, req.body.quantity, req.body.organisationRole).then((purchaseOrder) => {
-			console.log('Creating Purchase Order');
 			var result;
 			if (purchaseOrder.error) {
 				result = {
@@ -120,22 +115,22 @@ app.post('/purchaseOrder', (req, res) => {
 		})
 })
 
-app.post('/createShipment', (req, res) => {
-	requisition.execute.createShipment(req.body.buyerCRN, req.body.drugName, req.body.listOfAssets, req.body.transporterCRN, req.body.organisationRole).then((shipment) => {
+app.post('/shipment', (req, res) => {
+	requisition.execute.createShipment(req.body.buyerCRN, req.body.drugName, req.body.listOfAssets, req.body.transporterCRN, req.body.organisationRole).then((shipmentObject) => {
 		console.log('Creating Shipment');
 		var result;
-		if (shipment.error) {
+		if (shipmentObject.error) {
 			result = {
 				status: 'Failure',
 				message: 'Error while creating shipment',
-				error: shipment.error,
-				errorTrace: shipment.errorTrace
+				error: shipmentObject.error,
+				errorTrace: shipmentObject.errorTrace
 			};
 		} else {
 			result = {
 				status: 'success',
 				message: 'Shipment created successfully',
-				shipment: shipment
+				shipment: shipmentObject
 			};
 		}
 		res.status(500).send(result);
@@ -195,8 +190,8 @@ app.post('/retailDrug', (req, res) => {
 		})
 })
 
-app.post('/viewDrugCurrentState', (req, res) => {
-	txnUtils.execute.getDrugWorldState(req.body.drugName, req.body.serialNo, req.body.organisationRole).then((drug) => {
+app.get('/state', (req, res) => {
+	txnUtils.execute.getDrugWorldState(req.query.drugName, req.query.serialNo).then((drug) => {
 			console.log('View current state of the given Drug');
 			var result;
 			if (drug.error) {

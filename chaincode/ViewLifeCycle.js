@@ -1,20 +1,13 @@
 "use strict";
 
-const {
-  Contract
-} = require("fabric-contract-api");
+const {Contract} = require('fabric-contract-api');
+const {compositeObjectType} = require ('./constants.js');
 
 class ViewLifeCycle extends Contract {
-  constructor() {
-    //name of the Smart Contract => registration
-    super("pharma.net.viewLifeCycle");
-  }
-
-  //All the custom functions are listed below
+  constructor() {super("pharma.net.viewLifeCycle");}
 
   // This is a basic user defined function used at the time of instantiating the smart contract
   // to print the success message on console
-
   async instantiate(ctx) {
     console.log("Pharmanet Chaincode is Instantiated");
   }
@@ -24,16 +17,15 @@ class ViewLifeCycle extends Contract {
   /**
    * ViewHistory on the network
    * @param ctx - The transaction context object
-   * @param drugName
-   * @param serialNo
+   * @param drugName - Name of the drug
+   * @param serialNo - Serial Number of the drug
    * @returns - Trnasaction ID and details of each transaction
    */
 
   async viewHistory(ctx, drugName, serialNo) {
     try {
       const productIDKey = ctx.stub.createCompositeKey(
-        "pharma.net.productIDKey",
-        [serialNo, drugName]
+        compositeObjectType.drugId, [serialNo, drugName]
       );
 
       //getting history using getHistoryForKey passing productIDKey(drug composite key)
@@ -74,15 +66,14 @@ class ViewLifeCycle extends Contract {
   /**
    * View drug current state from the network
    * @param ctx - The transaction context object
-   * @param drugName
-   * @param serialNo
+   * @param drugName - Name of the drug
+   * @param serialNo - Serial number of the drug
    * @returns - Drug object
    */
   async viewDrugCurrentState(ctx, drugName, serialNo) {
     try {
       const productIDKey = ctx.stub.createCompositeKey(
-        "pharma.net.productIDKey",
-        [serialNo, drugName]
+        compositeObjectType.drugId, [serialNo, drugName]
       );
       let dataBuffer = await ctx.stub.getState(productIDKey).catch((err) => {
         console.log(err);

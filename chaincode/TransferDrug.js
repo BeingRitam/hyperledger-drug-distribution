@@ -1,19 +1,13 @@
 "use strict";
 
-const {
-    Contract
-} = require("fabric-contract-api");
+const {Contract} = require('fabric-contract-api');
+const {compositeObjectType, companyHierarchy, isExistingLedgerObject} = require('./constants.js');
 
 class TransferDrug extends Contract {
-    constructor() {
-        //name of the Smart Contract => registration
-        super("pharma.net.transferDrug");
-    }
-    //All the custom functions are listed below
+    constructor() {super("pharma.net.transferDrug");}
 
     // This is a basic user defined function used at the time of instantiating the smart contract
     // to print the success message on console
-
     async instantiate(ctx) {
         console.log("Pharmanet Chaincode is Instantiated");
     }
@@ -21,71 +15,80 @@ class TransferDrug extends Contract {
     /**
      * Create purchase order on the network
      * @param ctx - The transaction context object
-     * @param buyerCRN -  CRN of buyer ORG
+     * @param buyerCRN -  CRN of buyer org
      * @param sellerCRN - CRN for seller org
-     * @param drugName - name of Drug
-     * @param quantity - total number
+     * @param drugName - name of the drug
+     * @param quantity - qty to be ordered
      * @returns - new purchase order object
      */
 
     async createPO(ctx, buyerCRN, sellerCRN, drugName, quantity) {
         try {
-            const poIDKey = ctx.stub.createCompositeKey("pharma.net.poIDKey", [
-                buyerCRN,
-                drugName,
-            ]);
+            if (!['distributorMSP', 'retailerMSP'].includes(ctx.clientIdentity.getMSPID())) {
+                return {
+                    error: 'Only Distributor and Retailer create a new purchase order'
+                };
+            }
+            const poIDKey = ctx.stub.createCompositeKey(
+                compositeObjectType.purchaseOrderId, [buyerCRN, drugName]);
 
             //creating partial composite key for buyer and seller org to fetch details of both orgs
             const buyerCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "pharma.net.companyId",
-                [buyerCRN]
+                compositeObjectType.companyId,[buyerCRN]
             );
+
             let buyerKey = await buyerCompKey.next();
 
             const sellerCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "pharma.net.companyId",
-                [sellerCRN]
+                compositeObjectType.companyId, [sellerCRN]
             );
             let sellerKey = await sellerCompKey.next();
 
             let buyerOrgBuffer = await ctx.stub
                 .getState(buyerKey.value.key)
-                .catch((err) => {
-                    console.log(err);
-                });
+                .catch((err) => {console.log(err);});
+                console.log(`buyer buffer: ${JSON.stringify(buyerOrgBuffer)}`);
 
+            // Validate existing buyer org
+            if(!isExistingLedgerObject(buyerOrgBuffer)) {
+                return {
+                    error: `No Organisation exist with CRN: ${buyerCRN}`
+                };
+            }
             let buyerOrgDetails = JSON.parse(buyerOrgBuffer.toString());
 
             let sellerOrgBuffer = await ctx.stub
                 .getState(sellerKey.value.key)
-                .catch((err) => {
-                    console.log(err);
-                });
+                .catch((err) => {console.log(err);});
+
+            // Validate existing seller org
+            if(!isExistingLedgerObject(sellerOrgBuffer)) {
+                return {
+                    error: `No Organisation exist with CRN: ${sellerCRN}`
+                };
+            }
 
             let sellerOrgDetails = JSON.parse(sellerOrgBuffer.toString());
 
             //making sure hierarchy is followed when buying drug on the network.
             //Distributor can buy from Manufacturer  || Retailer can buy from Distributor || but retailer can't directly buy from Manufacturer
-            if (
-                (buyerOrgDetails.organisationRole === "Retailer" &&
-                    sellerOrgDetails.organisationRole === "Distributor") ||
-                (buyerOrgDetails.organisationRole === "Distributor" &&
-                    sellerOrgDetails.organisationRole === "Manufacturer")
-            ) {
-                let newPOObj = {
+            if ((buyerOrgDetails.hierarchyKey === companyHierarchy.Retailer && sellerOrgDetails.hierarchyKey === companyHierarchy.Distributor)
+                || (buyerOrgDetails.hierarchyKey === companyHierarchy.Distributor && sellerOrgDetails.hierarchyKey === companyHierarchy.Manufacturer)) {
+                let newPurchaseOrderObject = {
                     poID: poIDKey,
                     drugName: drugName,
                     quantity: quantity,
-                    //update buyer and seller details
                     buyer: buyerKey.value.key,
                     seller: sellerKey.value.key,
                 };
-                let poDataBuffer = Buffer.from(JSON.stringify(newPOObj));
-                await ctx.stub.putState(poIDKey, poDataBuffer);
-                return newPOObj;
+                console.log(`New purchaseOrder Object:\n${JSON.stringify(newPurchaseOrderObject)}`);
+
+                // Put state
+                await ctx.stub.putState(poIDKey, Buffer.from(JSON.stringify(newPurchaseOrderObject)));
+                return newPurchaseOrderObject;
             } else {
                 return {
-                    error: "Please make sure that the transfer of drug takes place in a hierarchical manner and no organisation in the middle is skipped. ",
+                    error: `Purchase order cannot be created by requester type: ${buyerOrgDetails.organisationRole} where the seller is of type: ${sellerOrgDetails.organisationRole}. Since intermediate organisation is being skipped`
                 };
             }
         } catch (err) {
@@ -100,10 +103,10 @@ class TransferDrug extends Contract {
     /**
      * Create a shipment on the network
      * @param ctx - The transaction context object
-     * @param buyerCRN
+     * @param buyerCRN - Buyer Identifier
      * @param drugName - Name of the drug
      * @param listOfAssets - array holding serial number of drugs [001,002,003]
-     * @param transporterCRN
+     * @param transporterCRN - Transporter Identifier
      * @returns - shipment object
      */
 
@@ -111,14 +114,12 @@ class TransferDrug extends Contract {
         //creating comp key for shipment to store shipment onj on ledger
         try {
             const shipmentKey = await ctx.stub.createCompositeKey(
-                "pharma.net.shipmentKey",
-                [buyerCRN, drugName]
+                compositeObjectType.shipmentKey, [buyerCRN, drugName]
             );
 
             //partial key of drug to update drug owner
             let poIDCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "pharma.net.poIDKey",
-                [buyerCRN]
+                compositeObjectType.purchaseOrderId, [buyerCRN]
             );
 
             let poIDKey = await poIDCompKey.next();
@@ -130,7 +131,7 @@ class TransferDrug extends Contract {
             let poIDDetails = JSON.parse(poIDBuffer.toString());
 
             const transporterCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "pharma.net.companyId",
+                compositeObjectType.companyId,
                 [transporterCRN]
             );
             let transporterKey = await transporterCompKey.next();
@@ -143,7 +144,7 @@ class TransferDrug extends Contract {
                 try {
                     for (let i = 0; i < listOfAssetArray.length; i++) {
                         let drugCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                            "pharma.net.productIDKey",
+                            compositeObjectType.drugId,
                             [listOfAssetArray[i]]
                         );
                         let drugKey = await drugCompKey.next();

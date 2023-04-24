@@ -158,7 +158,7 @@ function bootstrapRetry() {
 
 function updateChaincode() {
   checkPrereqs
-  docker exec cli scripts/updateChaincode.sh "$CHANNEL_NAME" "$CLI_DELAY" "$LANGUAGE" "$VERSION_NO" "$TYPE"
+  docker exec cli scripts/updateChaincode.sh "$CHANNEL_NAME" "$CLI_DELAY" "$LANGUAGE" "$VERSION_NO" "$TYPE" "$CC_NAME" "$CC_SEQ"
 }
 
 function installChaincode() {

@@ -138,6 +138,17 @@ joinChannelWithRetry() {
   verifyResult $res "After $MAX_RETRY attempts, peer${PEER}.${ORG} has failed to join channel '$CHANNEL_NAME' "
 }
 
+packageChaincode() {
+  set -x
+  peer lifecycle chaincode package $PACKAGE_NAME --path $CC_SRC_PATH --lang $LANGUAGE --label $VERSION >&log.txt
+  export PACKAGE_ID=$(peer lifecycle chaincode calculatepackageid ${PACKAGE_NAME})
+  res=$?
+  { set +x; } 2>/dev/null
+  cat log.txt
+  verifyResult $res "Chaincode packaging has failed"
+  successln "Chaincode is packaged"
+}
+
 installChaincode() {
   PEER=$1
   ORG=$2
@@ -151,6 +162,71 @@ installChaincode() {
   verifyResult $res "Chaincode installation on peer${PEER}.${ORG} has failed"
   echo "===================== Chaincode  pharmanet is installed on peer${PEER}.${ORG} ===================== "
   echo
+}
+
+# queryInstalled PEER ORG
+queryInstalled() {
+  PEER=$1
+  ORG=$2
+  setGlobals $PEER $ORG
+  set -x
+  infoln "Querying on peer$1.$ORG.pharma.net on channel '$CHANNEL_NAME'..."
+  peer lifecycle chaincode queryinstalled >&log.txt
+  res=$?
+  { set +x; } 2>/dev/null
+  cat log.txt
+  verifyResult $res "Query installed on peer$1.$ORG.pharma.net has failed"
+  successln "Query installed successful on peer$1.$ORG.pharma.net on channel"
+}
+
+# approveForMyOrg VERSION PEER ORG
+approveForMyOrg() {
+  PEER=$1
+  ORG=$2
+  setGlobals $PEER $ORG
+  set -x
+  infoln "Approving chaincode definition on peer$1.$ORG.pharma.net on channel '$CHANNEL_NAME'..."
+  peer lifecycle chaincode approveformyorg -o orderer.pharma.net:7050 --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name $CC_NAME --version $VERSION  --sequence $CC_SEQ --package-id $PACKAGE_ID >&log.txt
+  res=$?
+  { set +x; } 2>/dev/null
+  cat log.txt
+  verifyResult $res "Chaincode definition approved on peer$1.$ORG.pharma.net on channel '$CHANNEL_NAME' failed"
+  successln "Chaincode definition approved on peer$1.$ORG.pharma.net on channel '$CHANNEL_NAME'"
+}
+
+# checkCommitReadiness VERSION PEER ORG
+checkCommitReadiness() {
+  infoln "Checking the commit readiness of the chaincode definition on channel '$CHANNEL_NAME'..."
+  set -x
+  peer lifecycle chaincode checkcommitreadiness --channelID $CHANNEL_NAME --name $CC_NAME --version $VERSION  --sequence $CC_SEQ --output json >&log.txt
+  res=$?
+  { set +x; } 2>/dev/null
+  cat log.txt
+  verifyResult $res "Commit readiness check on peer$1.$ORG.pharma.net on channel '$CHANNEL_NAME' failed"
+  successln "Commit readiness check on peer$1.$ORG.pharma.net on channel '$CHANNEL_NAME'"
+}
+
+# commitChaincodeDefinition VERSION PEER ORG (PEER ORG)...
+commitChaincodeDefinition() {
+  parsePeerConnectionParameters $@
+  set -x
+  peer lifecycle chaincode commit -o orderer.pharma.net:7050 --tls --cafile "$ORDERER_CA" --channelID $CHANNEL_NAME --name $CC_NAME "${PEER_CONN_PARMS[@]}" --version $VERSION --sequence $CC_SEQ >&log.txt
+  res=$?
+  { set +x; } 2>/dev/null
+  cat log.txt
+  verifyResult $res "Chaincode definition commit failed on peer0.org${ORG} on channel '$CHANNEL_NAME' failed"
+  successln "Chaincode definition committed on channel '$CHANNEL_NAME'"
+}
+
+queryCommitted() {
+  PEER=$1
+  ORG=$2
+  setGlobals $PEER $ORG
+  infoln "Attempting to Query committed status on peer$1.$ORG.pharma.net on channel '$CHANNEL_NAME'..."
+    set -x
+    peer lifecycle chaincode querycommitted --channelID $CHANNEL_NAME --name ${CC_NAME} >&log.txt
+    res=$?
+    { set +x; } 2>/dev/null
 }
 
 instantiateChaincode() {

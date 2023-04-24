@@ -10,39 +10,39 @@ const {constants} = require('./constants.js');
 async function createCompanyEntity(companyCRN, companyName, location, organisationRole) {
   try {
     const companyContract = await contractHelper.getContractInstance(organisationRole, constants.contractName.registration);
-    console.log('Creating new organisation registration request');
+    console.log(`Creating new ${organisationRole} organisation with name: ${companyName} and registration number: ${companyCRN}`);
     const companyBuffer = await companyContract.submitTransaction('registerCompany', companyCRN, companyName, location, organisationRole);
 
-    console.log('Processing request to register a new organization');
     let newOrg = JSON.parse(companyBuffer.toString());
     console.log(newOrg);
-    console.log('New Organization is now registered');
+    if(!newOrg.error) {
+      console.log(`${organisationRole} organisation is now registered with name: ${companyName}`);
+    }
     return newOrg;
   } catch (error) {
     console.log(`\n\n ${error} \n\n`);
     throw new Error(error);
   } finally {
-    console.log('Disconnect from fabric');
     contractHelper.disconnect();
   }
 }
 
 async function createDrugEntity(drugName, serialNo, mfgDate, expDate, companyCRN) {
   try {
-      const Contract = await contractHelper.getContractInstance(constants.organisationRole.manufacturer, constants.contractName.drugRegistration);
-      console.log('Creating new Drug Add request');
-      const userBuffer = await Contract.submitTransaction('addDrug', drugName, serialNo, mfgDate, expDate, companyCRN);
+      const drugContract = await contractHelper.getContractInstance(constants.organisationRole.manufacturer, constants.contractName.drugRegistration);
+      console.log(`Registering new drug: ${drugName} with serial: ${serialNo} by manufacturer: ${companyCRN}`);
+      const drugBuffer = await drugContract.submitTransaction('addDrug', drugName, serialNo, mfgDate, expDate, companyCRN);
 
-      console.log('Processing request to add a new DRUG');
-      let newOrg = JSON.parse(userBuffer.toString());
-      console.log(newOrg);
-      console.log('New Drug is now added');
-      return newOrg;
+      let newDrug = JSON.parse(drugBuffer.toString());
+      console.log(newDrug);
+      if(!newDrug.error) {
+        console.log(`New drug: ${drugName} with serial: ${serialNo} registered by manufacturer: ${companyCRN}`);
+      }
+      return newDrug;
   } catch (error) {
       console.log(`\n\n ${error} \n\n`);
       throw new Error(error);
   } finally {
-      console.log('Disconnect from fabric');
       contractHelper.disconnect();
   }
 }

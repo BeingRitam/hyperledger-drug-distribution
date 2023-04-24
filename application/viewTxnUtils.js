@@ -27,18 +27,18 @@ async function getDrugTxnHistory(drugName, serialNo, organisationRole) {
     }
 }
 
-async function getDrugWorldState(drugName, serialNo, organisationRole) {
+async function getDrugWorldState(drugName, serialNo) {
     try {
-        const Contract = await contractHelper.getContractInstance(organisationRole, constants.contractName.lifeCycle);
-        //console.log(Contract);
-        console.log('View Drug current state Initialized');
-        const userBuffer = await Contract.submitTransaction('viewDrugCurrentState', drugName, serialNo);
+        const Contract = await contractHelper.getContractInstance(constants.organisationRole.consumer, constants.contractName.lifeCycle);
+        console.log(`Trying to fetch current state for drug: ${drugName} with serial: ${serialNo}`);
+        const drugStateBuffer = await Contract.submitTransaction('viewDrugCurrentState', drugName, serialNo);
 
-        console.log('Processing View Drug current state');
-        let newOrg = JSON.parse(userBuffer.toString());
-        console.log(newOrg);
-        console.log('View Drug current state is now processed');
-        return newOrg;
+        let drugState = JSON.parse(drugStateBuffer.toString());
+        console.log(drugState);
+        if(!drugState.error) {
+            console.log(`Successfully fetched world state details for drug: ${drugName} with serial: ${serialNo}`);
+          }
+        return drugState;
     } catch (error) {
         console.log(`\n\n ${error} \n\n`);
         throw new Error(error);

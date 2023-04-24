@@ -1,10 +1,9 @@
 "use strict";
-const {Contract} = require("fabric-contract-api");
+const {Contract} = require('fabric-contract-api');
+const {compositeObjectType, isExistingLedgerObject} = require('./constants.js');
 
 class DrugRegistrationContract extends Contract {
-    constructor() {
-        super("pharma.net.drugRegistration");
-    }
+    constructor() {super("pharma.net.drugRegistration");}
 
     async instantiate(ctx) {
         console.log("Pharmanet Chaincode is Instantiated");
@@ -14,9 +13,9 @@ class DrugRegistrationContract extends Contract {
      * This transaction is used by any organisation registered as a ‘manufacturer’ to register a new drug on the ledger. 
      * @param ctx - The transaction context object
      * @param drugName - Name of the drug
-     * @param serialNo 
-     * @param mfgDate 
-     * @param expDate 
+     * @param serialNo - Uniquely identifiable number for each strip
+     * @param mfgDate - Date of Manufacture
+     * @param expDate - Date of Expiry
      * @param companyCRN - unique company CRN
      * @returns - drug object 
      */
@@ -24,20 +23,28 @@ class DrugRegistrationContract extends Contract {
     async addDrug(ctx, drugName, serialNo, mfgDate, expDate, companyCRN) {
         //This transaction should be invoked only by a manufacturer registered on the ledger.
         try {
-            if (ctx.clientIdentity.getMSPID() != "manufacturerMSP") {
+            if (ctx.clientIdentity.getMSPID() != 'manufacturerMSP') {
                 return {
-                    error: "Only Manufacturer Org can add drugs on the pharma-network"
+                    error: 'Only Manufacturer can add drugs in the network'
                 };
             }
             //composite key for storing drug
             const productIDKey = ctx.stub.createCompositeKey(
-                "pharma.net.productIDKey",
-                [serialNo, drugName]
+                compositeObjectType.drugId, [serialNo, drugName]
             );
+            //get the state from ledger to check if the company already exist
+            let drugBuffer = await ctx.stub
+                .getState(productIDKey)
+                .catch((err) => console.log(err));
+
+            if(isExistingLedgerObject(drugBuffer)) {
+                return {
+                    error: `Drug with name: ${drugName} and serial: ${serialNo} is already registered.`
+                };
+            }
             //fetching manufacturer org details from the ledger using partial composite key 
             let manufacturerCompKey = await ctx.stub.getStateByPartialCompositeKey(
-                "pharma.net.companyId",
-                [companyCRN]
+                compositeObjectType.companyId, [companyCRN]
             );
             //manuKey hold the return object from the itterator manuKey.value.key hold the composite key of the Manufacturer org
             let manuKey = await manufacturerCompKey.next();
@@ -47,15 +54,14 @@ class DrugRegistrationContract extends Contract {
                 name: drugName,
                 manufacturer: manuKey.value.key,
                 manufacturingDate: mfgDate,
-
                 expiryDate: expDate,
                 owner: manuKey.value.key,
                 shipment: "",
             };
+            console.log(`New drug Object:\n${JSON.stringify(newDrugObj)}`);
 
-            let dataBuffer = Buffer.from(JSON.stringify(newDrugObj));
-            //storing the new drug object on the ledger 
-            await ctx.stub.putState(productIDKey, dataBuffer);
+            // put state
+            await ctx.stub.putState(productIDKey, Buffer.from(JSON.stringify(newDrugObj)));
             return newDrugObj;
 
         } catch (err) {
