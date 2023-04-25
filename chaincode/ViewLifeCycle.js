@@ -1,7 +1,8 @@
 "use strict";
 
-const {Contract} = require('fabric-contract-api');
-const {compositeObjectType} = require ('./constants.js');
+const { Contract } = require('fabric-contract-api');
+const { compositeObjectType } = require ('./constants.js');
+const { getLedgerObjectByIdentifiers, getHistroyOfChangesByIdentifiers } = require ('./utils.js');
 
 class ViewLifeCycle extends Contract {
   constructor() {super("pharma.net.viewLifeCycle");}
@@ -11,8 +12,6 @@ class ViewLifeCycle extends Contract {
   async instantiate(ctx) {
     console.log("Pharmanet Chaincode is Instantiated");
   }
-
-  //all custom fucntions
 
   /**
    * ViewHistory on the network
@@ -24,37 +23,7 @@ class ViewLifeCycle extends Contract {
 
   async viewHistory(ctx, drugName, serialNo) {
     try {
-      const productIDKey = ctx.stub.createCompositeKey(
-        compositeObjectType.drugId, [serialNo, drugName]
-      );
-
-      //getting history using getHistoryForKey passing productIDKey(drug composite key)
-      let resultsIterator = await ctx.stub.getHistoryForKey(productIDKey);
-      let allResults = [];
-      while (true) {
-        let res = await resultsIterator.next();
-        if (res.value && res.value.value.toString()) {
-          let jsonRes = {};
-          console.log(res.value.value.toString("utf8"));
-
-          jsonRes.TxId = res.value.tx_id;
-          jsonRes.Timestamp = res.value.timestamp;
-          jsonRes.IsDelete = res.value.is_delete.toString();
-          try {
-            jsonRes.Value = JSON.parse(res.value.value.toString("utf8"));
-          } catch (err) {
-            console.log(err);
-            jsonRes.Value = res.value.value.toString("utf8");
-          }
-          allResults.push(jsonRes);
-        }
-        if (res.done) {
-          console.log("end of data");
-          await resultsIterator.close();
-          console.info(allResults);
-          return allResults;
-        }
-      }
+      return await getHistroyOfChangesByIdentifiers(ctx, compositeObjectType.drugId, [serialNo, drugName]);
     } catch (err) {
       return {
         error: "Unable to fetch History of Drug asset on the network, check input parameters",
@@ -72,13 +41,7 @@ class ViewLifeCycle extends Contract {
    */
   async viewDrugCurrentState(ctx, drugName, serialNo) {
     try {
-      const productIDKey = ctx.stub.createCompositeKey(
-        compositeObjectType.drugId, [serialNo, drugName]
-      );
-      let dataBuffer = await ctx.stub.getState(productIDKey).catch((err) => {
-        console.log(err);
-      });
-      return JSON.parse(dataBuffer.toString());
+      return await getLedgerObjectByIdentifiers(ctx, compositeObjectType.drugId, [serialNo, drugName]);
     } catch (err) {
       return {
         error: "Unable to view Current History of Drug asset on the network, check input parameters",

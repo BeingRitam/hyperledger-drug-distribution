@@ -7,7 +7,9 @@ const contractName = {
 
 const organisationRole = {
     manufacturer: 'Manufacturer',
-    consumer: 'Consumer'
+    consumer: 'Consumer',
+    transporter: 'Transporter',
+    retailer: 'Retailer'
 }
 
 module.exports.constants = {contractName, organisationRole};

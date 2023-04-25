@@ -12,9 +12,10 @@ const companyHierarchy = {
     Transporter: -1
 }
 
-function isExistingLedgerObject(ledgerBuffer) {
-    if (!ledgerBuffer || ledgerBuffer.length === 0) return false;
-    else return true;
+const transitState = {
+    1 : 'in-transit',
+    2 : 'delivered',
+    3 : 'in-warehouse'
 }
 
-module.exports = {compositeObjectType, companyHierarchy, isExistingLedgerObject};
+module.exports = {compositeObjectType, companyHierarchy, transitState};

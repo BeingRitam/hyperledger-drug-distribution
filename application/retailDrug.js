@@ -7,23 +7,22 @@ Node JS app to retail drug on the network
 const contractHelper = require("./contractHelper.js");
 const {constants} = require('./constants.js');
 
-async function main(drugName, serialNo, retailerCRN, customerAadhar, organisationRole) {
+async function main(drugName, serialNo, retailerCRN, customerAadhar) {
     try {
-        const Contract = await contractHelper.getContractInstance(organisationRole, constants.contractName.drugTransfer);
-        //console.log(Contract);
-        console.log('Retail Drug Initialized');
-        const userBuffer = await Contract.submitTransaction('retailDrug', drugName, serialNo, retailerCRN, customerAadhar);
+        const drugTransferContract = await contractHelper.getContractInstance(constants.organisationRole.retailer, constants.contractName.drugTransfer);
+        console.log(`Trying to sell drug: ${drugName} by retailer CRN: ${retailerCRN} with serial No: ${serialNo}`);
+        const drugBuffer = await drugTransferContract.submitTransaction('retailDrug', drugName, serialNo, retailerCRN, customerAadhar);
 
-        console.log('Updating Retail Drug');
-        let newOrg = JSON.parse(userBuffer.toString());
-        console.log(newOrg);
-        console.log('Drug Details are now Updated');
-        return newOrg;
+        let drugObj = JSON.parse(drugBuffer.toString());
+        console.log(drugObj);
+        if(!drugObj.error) {
+        console.log(`drug: ${drugName} sold to customer with adhaar ${customerAadhar} by retailer: ${retailerCRN}`);
+        }
+        return drugObj;
     } catch (error) {
         console.log(`\n\n ${error} \n\n`);
         throw new Error(error);
     } finally {
-        console.log('Disconnect from fabric');
         contractHelper.disconnect();
     }
 }

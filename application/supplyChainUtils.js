@@ -47,17 +47,18 @@ async function createShipment(buyerCRN, drugName, listOfAssets, transporterCRN, 
   }
 }
 
-async function updateShipment(buyerCRN, drugName, transporterCRN, organisationRole) {
+async function updateShipment(buyerCRN, drugName, transporterCRN) {
   try {
-      const Contract = await contractHelper.getContractInstance(organisationRole, constants.contractName.drugTransfer);
-      console.log('Updating Shipmentrequest');
-      const userBuffer = await Contract.submitTransaction('updateShipment', buyerCRN, drugName, transporterCRN);
+      const drugTransferContract = await contractHelper.getContractInstance(constants.organisationRole.transporter, constants.contractName.drugTransfer);
+      console.log('Updating Shipment request');
+      const shipmentBuffer = await drugTransferContract.submitTransaction('updateShipment', buyerCRN, drugName, transporterCRN);
+      let newShipmentObj = JSON.parse(shipmentBuffer.toString());
+      console.log(newShipmentObj);
 
-      console.log('Updating Shipment');
-      let newOrg = JSON.parse(userBuffer.toString());
-      console.log(newOrg);
-      console.log('Shipment now Updated');
-      return newOrg;
+      if(!newShipmentObj.error) {
+        console.log(`Shipment updated as delivered`);
+      }
+      return newShipmentObj;
   } catch (error) {
       console.log(`\n\n ${error} \n\n`);
       throw new Error(error);

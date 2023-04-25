@@ -137,22 +137,21 @@ app.post('/shipment', (req, res) => {
 	})
 })
 
-app.post('/updateShipment', (req, res) => {
-	requisition.execute.updateShipment(req.body.buyerCRN, req.body.drugName, req.body.transporterCRN, req.body.organisationRole).then((shipment) => {
-		console.log('Updating Shipment');
+app.patch('/shipment', (req, res) => {
+	requisition.execute.updateShipment(req.body.buyerCRN, req.body.drugName, req.body.transporterCRN).then((shipmentObj) => {
 		var result;
-		if (shipment.error) {
+		if (shipmentObj.error) {
 			result = {
 				status: 'Failure',
 				message: 'Error while updating shipment',
-				error: shipment.error,
-				errorTrace: shipment.errorTrace
+				error: shipmentObj.error,
+				errorTrace: shipmentObj.errorTrace
 			};
 		} else {
 			result = {
 				status: 'success',
 				message: 'Shipment updated successfully',
-				shipment: shipment
+				shipment: shipmentObj
 			};
 		}
 		res.status(500).send(result);
@@ -160,22 +159,22 @@ app.post('/updateShipment', (req, res) => {
 })
 
 app.post('/retailDrug', (req, res) => {
-	retailDrug.execute(req.body.drugName, req.body.serialNo, req.body.retailerCRN, req.body.customerAadhar, req.body.organisationRole).then((drug) => {
+	retailDrug.execute(req.body.drugName, req.body.serialNo, req.body.retailerCRN, req.body.customerAadhar).then((drugObj) => {
 			console.log('Drug Retail');
 			var result;
-			if (drug.error) {
+			if (drugObj.error) {
 				result = {
 					status: 'Failure',
 					message: 'Error while updating Drug asset details',
-					error: drug.error,
-					errorTrace: drug.errorTrace
+					error: drugObj.error,
+					errorTrace: drugObj.errorTrace
 
 				};
 			} else {
 				result = {
 					status: 'success',
 					message: 'Drug details updated successfully',
-					drug: drug
+					drug: drugObj
 				};
 			}
 			res.json(result);
@@ -191,21 +190,21 @@ app.post('/retailDrug', (req, res) => {
 })
 
 app.get('/state', (req, res) => {
-	txnUtils.execute.getDrugWorldState(req.query.drugName, req.query.serialNo).then((drug) => {
+	txnUtils.execute.getDrugWorldState(req.query.drugName, req.query.serialNo).then((drugObj) => {
 			console.log('View current state of the given Drug');
 			var result;
-			if (drug.error) {
+			if (drugObj.error) {
 				result = {
 					status: 'Failure',
 					message: 'Unable to fetch Drug asset details',
-					error: drug.error,
-					errorTrace: drug.errorTrace
+					error: drugObj.error,
+					errorTrace: drugObj.errorTrace
 				};
 			} else {
 				result = {
 					status: 'success',
 					message: 'Drug details fetched successfully',
-					drug: drug
+					drug: drugObj
 				};
 			}
 			res.json(result);
@@ -220,22 +219,22 @@ app.get('/state', (req, res) => {
 		})
 })
 
-app.post('/viewHistory', (req, res) => {
-	txnUtils.execute.getDrugTxnHistory(req.body.drugName, req.body.serialNo, req.body.organisationRole).then((drug) => {
+app.get('/history', (req, res) => {
+	txnUtils.execute.getDrugTxnHistory(req.query.drugName, req.query.serialNo).then((drugHistoryObj) => {
 			console.log('View history of transaction on the drug');
 			var result;
-			if (drug.error) {
+			if (drugHistoryObj.error) {
 				result = {
 					status: 'Failure',
 					message: 'Unable to fetch Drug asset transaction history',
-					error: drug.error,
-					errorTrace: drug.errorTrace
+					error: drugHistoryObj.error,
+					errorTrace: drugHistoryObj.errorTrace
 				};
 			} else {
 				result = {
 					status: 'success',
 					message: 'Drug transaction history fetched successfully',
-					drug: drug
+					drug: drugHistoryObj
 				};
 			}
 			res.json(result);

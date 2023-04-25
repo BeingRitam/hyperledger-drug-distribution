@@ -1,6 +1,7 @@
 "use strict";
 const {Contract} = require('fabric-contract-api');
-const {compositeObjectType, companyHierarchy, isExistingLedgerObject} = require('./constants.js');
+const {compositeObjectType, companyHierarchy} = require('./constants.js');
+const { isExistingLedgerObject } = require('./utils.js');
 
 class RegistrationContract extends Contract {
   constructor() {super("pharma.net.registration");}
