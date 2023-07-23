@@ -35,27 +35,18 @@ async function getLedgerObjectByKey(ctx, key) {
 
 async function getHistroyOfChangesByIdentifiers(ctx, objectType, identifiers) {
   const ledgerKey = await ctx.stub.createCompositeKey(objectType, identifiers);
-  let resultsIterator = await ctx.stub.getHistoryForKey(ledgerKey);
-  let results = [];
-  let res = await resultsIterator.next();
-  if (!res.value) {
-    throw new Error(`No record found for identifier ${JSON.stringify(identifiers)}`);
-  }
-  while (!res.done) {
-    let obj = JSON.parse(res.value.value.toString('utf8'));
-    let txTimestamp = res.value.timestamp;
-    let isDelete = res.value.isDelete;
+  const resultsIterator = ctx.stub.getHistoryForKey(ledgerKey);
 
-    let result = {
-      timestamp: txTimestamp,
-      txId: res.value.tx_id,
-      isDelete: isDelete,
-      value: obj,
-    };
+  const results = [];
+  for await (const keyMod of resultsIterator) {
+    const result = {
+        timestamp: keyMod.timestamp,
+        txid: keyMod.txId,
+        isDelete: keyMod.isDelete,
+        value: JSON.parse(keyMod.value.toString('utf8'))
+    }
     results.push(result);
-    res = await resultsIterator.next();
   }
-  await resultsIterator.close();
   return results;
 }
 

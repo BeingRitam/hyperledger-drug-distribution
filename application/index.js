@@ -16,13 +16,8 @@ const addToWalletRetailer = require('./addToWalletForAllOrg/retailer_addToWallet
 
 
 //Define express app settings
-
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({
-	extended: true
-}));
-app.set('title', 'Drug Supply Chain System');
 
 app.get('/', (req, res) => res.send("Hello this is an App for Pharma Network Registration"));
 
@@ -33,220 +28,103 @@ app.post('/company', (req, res) => {
 			//if return object doesn't have error property then return status = success
 			//returnObject.errorTace property will print more detailed error or trace logs
 			if (companyObj.error) {
-				var result = {
-					status: 'Failure',
-					message: 'Error while registering the company, condition to register company not fullfilled',
-					error: companyObj.error,
-					errorTrace: companyObj.errorTrace
-				};
+				res.status(400).json(generateErrorResponse(companyObj, 'Error while registering the company'));
 			} else {
-				var result = {
-					status: 'success',
-					message: 'Company Registered',
-					company: companyObj
-				};
+				res.status(201).json(generateSuccessResponse('company', companyObj, 'Company Registered'));
 			}
-			res.json(result);
-		})
-		.catch((e) => {
-			const result = {
-				status: 'error',
-				message: 'Failed',
-				error: e
-			};
-			res.status(500).send(result);
-		})
+		}).catch(e => res.status(500).send(generateServerErrorResponse(e)));
 })
 
 app.post('/drug', (req, res) => {
 	registerEntity.execute.createDrugEntity(req.body.drugName, req.body.serialNo, req.body.mfgDate, req.body.expDate, req.body.companyCRN).then((drugObj) => {
-			if (drugObj.error) {
-				var result = {
-					status: 'Failure',
-					message: 'Error while adding the drug',
-					error: drugObj.error,
-					errorTrace: drugObj.errorTrace
-				};
-			} else {
-				var result = {
-					status: 'success',
-					message: 'Drug added successfully',
-					drug: drugObj
-				};
-			}
-			res.json(result);
-		})
-		.catch((e) => {
-			const result = {
-				status: 'error',
-				message: 'Failed',
-				error: e
-			};
-			res.status(500).send(result);
-		})
+		if (drugObj.error) {
+			res.status(400).json(generateErrorResponse(drugObj, 'Error while adding the drug'));
+		} else {
+			res.status(201).json(generateSuccessResponse('drug', drugObj, 'Drug added successfully'));
+		}
+	}).catch(e => res.status(500).send(generateServerErrorResponse(e)));
 })
 
 app.post('/purchaseOrder', (req, res) => {
-	requisition.execute.createPO(req.body.buyerCRN, req.body.sellerCRN, req.body.drugName, req.body.quantity, req.body.organisationRole).then((purchaseOrder) => {
-			var result;
-			if (purchaseOrder.error) {
-				result = {
-					status: 'Failure',
-					message: 'Error while creating the purchase order',
-					error: purchaseOrder.error,
-					errorTrace: purchaseOrder.errorTrace
-				};
-			} else {
-				result = {
-					status: 'success',
-					message: 'Purchase order created successfully',
-					purchaseOrder: purchaseOrder
-				};
-			}
-			res.json(result);
-		})
-		.catch((e) => {
-			const result = {
-				status: 'error',
-				message: 'Failed',
-				error: e
-			};
-			res.status(500).send(result);
-		})
+	requisition.execute.createPO(req.body.buyerCRN, req.body.sellerCRN, req.body.drugName, req.body.quantity, req.body.organisationRole).then((purchaseOrderObj) => {
+		if (purchaseOrderObj.error) {
+			res.status(400).json(generateErrorResponse(purchaseOrderObj, 'Error while creating the purchase order'));
+		} else {
+			res.status(201).json(generateSuccessResponse('purchaseOrder', purchaseOrderObj, 'Purchase order created successfully'));
+		}
+	}).catch(e => res.status(500).send(generateServerErrorResponse(e)));
 })
 
 app.post('/shipment', (req, res) => {
 	requisition.execute.createShipment(req.body.buyerCRN, req.body.drugName, req.body.listOfAssets, req.body.transporterCRN, req.body.organisationRole).then((shipmentObject) => {
-		console.log('Creating Shipment');
-		var result;
 		if (shipmentObject.error) {
-			result = {
-				status: 'Failure',
-				message: 'Error while creating shipment',
-				error: shipmentObject.error,
-				errorTrace: shipmentObject.errorTrace
-			};
+			res.status(400).json(generateErrorResponse(shipmentObject, 'Error while creating shipment'));
 		} else {
-			result = {
-				status: 'success',
-				message: 'Shipment created successfully',
-				shipment: shipmentObject
-			};
+			res.status(201).json(generateSuccessResponse('shipment', shipmentObject, 'Shipment created successfully'));
 		}
-		res.status(500).send(result);
 	})
 })
 
 app.patch('/shipment', (req, res) => {
 	requisition.execute.updateShipment(req.body.buyerCRN, req.body.drugName, req.body.transporterCRN).then((shipmentObj) => {
-		var result;
 		if (shipmentObj.error) {
-			result = {
-				status: 'Failure',
-				message: 'Error while updating shipment',
-				error: shipmentObj.error,
-				errorTrace: shipmentObj.errorTrace
-			};
+			res.status(400).json(generateErrorResponse(shipmentObj, 'Error while updating shipment'));
 		} else {
-			result = {
-				status: 'success',
-				message: 'Shipment updated successfully',
-				shipment: shipmentObj
-			};
+			res.status(200).json(generateSuccessResponse('shipment', shipmentObj, 'Shipment updated successfully'));
 		}
-		res.status(500).send(result);
 	})
 })
 
 app.post('/retailDrug', (req, res) => {
 	retailDrug.execute(req.body.drugName, req.body.serialNo, req.body.retailerCRN, req.body.customerAadhar).then((drugObj) => {
-			console.log('Drug Retail');
-			var result;
-			if (drugObj.error) {
-				result = {
-					status: 'Failure',
-					message: 'Error while updating Drug asset details',
-					error: drugObj.error,
-					errorTrace: drugObj.errorTrace
-
-				};
-			} else {
-				result = {
-					status: 'success',
-					message: 'Drug details updated successfully',
-					drug: drugObj
-				};
-			}
-			res.json(result);
-		})
-		.catch((e) => {
-			const result = {
-				status: 'error',
-				message: 'Failed',
-				error: e
-			};
-			res.status(500).send(result);
-		})
+		if (drugObj.error) {
+			res.status(400).json(generateErrorResponse(drugObj, 'Error while updating Drug asset details'));
+		} else {
+			res.status(200).json(generateSuccessResponse('drug', drugObj, 'Drug details updated successfully'));
+		}
+	}).catch(e => res.status(500).send(generateServerErrorResponse(e)));
 })
 
 app.get('/state', (req, res) => {
 	txnUtils.execute.getDrugWorldState(req.query.drugName, req.query.serialNo).then((drugObj) => {
-			console.log('View current state of the given Drug');
-			var result;
-			if (drugObj.error) {
-				result = {
-					status: 'Failure',
-					message: 'Unable to fetch Drug asset details',
-					error: drugObj.error,
-					errorTrace: drugObj.errorTrace
-				};
-			} else {
-				result = {
-					status: 'success',
-					message: 'Drug details fetched successfully',
-					drug: drugObj
-				};
-			}
-			res.json(result);
-		})
-		.catch((e) => {
-			const result = {
-				status: 'error',
-				message: 'Failed',
-				error: e
-			};
-			res.status(500).send(result);
-		})
+		if (drugObj.error) {
+			res.status(400).json(generateErrorResponse(drugObj, 'Unable to fetch Drug asset details'));
+		} else {
+			res.status(200).json(generateSuccessResponse('drug', drugObj, 'Drug details fetched successfully'));
+		}
+	}).catch(e => res.status(500).send(generateServerErrorResponse(e)));
 })
 
 app.get('/history', (req, res) => {
 	txnUtils.execute.getDrugTxnHistory(req.query.drugName, req.query.serialNo).then((drugHistoryObj) => {
-			console.log('View history of transaction on the drug');
-			var result;
-			if (drugHistoryObj.error) {
-				result = {
-					status: 'Failure',
-					message: 'Unable to fetch Drug asset transaction history',
-					error: drugHistoryObj.error,
-					errorTrace: drugHistoryObj.errorTrace
-				};
-			} else {
-				result = {
-					status: 'success',
-					message: 'Drug transaction history fetched successfully',
-					drug: drugHistoryObj
-				};
-			}
-			res.json(result);
-		})
-		.catch((e) => {
-			const result = {
-				status: 'error',
-				message: 'Failed',
-				error: e
-			};
-			res.status(500).send(result);
-		})
+		if (drugHistoryObj.error) {
+			res.status(400).json(generateErrorResponse(drugHistoryObj, 'Unable to fetch Drug asset transaction history'));
+		} else {
+			res.status(200).json(generateSuccessResponse('drug', drugHistoryObj, 'Drug transaction history fetched successfully'));
+		}
+	}).catch(e => res.status(500).send(generateServerErrorResponse(e)));
 })
 
+function generateErrorResponse(obj, errorMessage) {
+	return {
+		status: 'Failure',
+		message: errorMessage,
+		error: obj.error,
+		errorTrace: obj.errorTrace
+	};
+}
+function generateSuccessResponse(objKey, obj, successMessage) {
+	return {
+		status: 'Successful',
+		message: successMessage,
+		[objKey]: obj
+	}
+}
+function generateServerErrorResponse(errorObj) {
+	return {
+		status: 'error',
+		message: 'Failed',
+		error: errorObj
+	}
+}
 app.listen(port, () => console.log(`Distributed PharmaNetwork App listening on port ${port}!`));

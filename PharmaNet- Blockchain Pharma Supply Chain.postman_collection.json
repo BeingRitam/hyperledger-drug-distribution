@@ -1,0 +1,1180 @@
+{
+	"info": {
+		"_postman_id": "e5d97873-16e7-46e6-8fa6-c611392e9c4a",
+		"name": "PharmaNet: Blockchain Pharma Supply Chain",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27099348"
+	},
+	"item": [
+		{
+			"name": "Register Entities",
+			"item": [
+				{
+					"name": "Register as a Manufacturer [Sun Pharma]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyCRN\" : \"MAN001\",\n    \"companyName\" : \"Sun Pharma\",\n    \"location\" : \"Chennai\",\n    \"organisationRole\" : \"Manufacturer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/company",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register as a Transporter [FedEX]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyCRN\" : \"TRA001\",\n    \"companyName\" : \"FedEx\",\n    \"location\" : \"Delhi\",\n    \"organisationRole\" : \"Transporter\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/company",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company"
+							]
+						},
+						"description": "Create a transporter with the following details:\nName: ‘FedEx’\nCRN number: ‘TRA001’ \nLocation: ‘Delhi’"
+					},
+					"response": []
+				},
+				{
+					"name": "Register as a Transporter [BlueDart]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyCRN\" : \"TRA002\",\n    \"companyName\" : \"Blue Dart\",\n    \"location\" : \"Bangalore\",\n    \"organisationRole\" : \"Transporter\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/company",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company"
+							]
+						},
+						"description": "Create another transporter with the following details:\nName: ‘Blue Dart’\nCRN number: ‘TRA002’  \nLocation: ‘Bangalore’"
+					},
+					"response": []
+				},
+				{
+					"name": "Register as a Distributor [VG Pharma]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyCRN\" : \"DIST001\",\n    \"companyName\" : \"VG Pharma\",\n    \"location\" : \"Vizag\",\n    \"organisationRole\" : \"Distributor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/company",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company"
+							]
+						},
+						"description": "Create a distributor with the following details:\nName: ‘VG Pharma’\nCRN number: ‘DIST001’  \nLocation: ‘Vizag’"
+					},
+					"response": []
+				},
+				{
+					"name": "Register as a Retailer [Apollo Pharma]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyCRN\" : \"RET001\",\n    \"companyName\" : \"Apollo Pharma\",\n    \"location\" : \"Kolkata\",\n    \"organisationRole\" : \"Retailer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/company",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company"
+							]
+						},
+						"description": "Create a retailer with the following details:\nName: ‘upgrad’\nCRN number: ‘RET002’  \nLocation: ‘Mumbai’"
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scneario: Register as a Consumer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Customer shouldn't allowed to be registered as an entity\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"companyCRN\" : \"CON001\",\n    \"companyName\" : \"Ritam Das\",\n    \"location\" : \"Kolkata\",\n    \"organisationRole\" : \"Consumer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/company",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"company"
+							]
+						},
+						"description": "Create a retailer with the following details:\nName: ‘upgrad’\nCRN number: ‘RET002’  \nLocation: ‘Mumbai’"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Register Drugs",
+			"item": [
+				{
+					"name": "Create new Drug [Paracetamol: 001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"drugName\" : \"Paracetamol\",\n    \"serialNo\" : \"001\",\n    \"mfgDate\" : \"13-Jan-2023\",\n    \"expDate\": \"25-Feb-2027\",\n    \"companyCRN\" : \"MAN001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/drug",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"drug"
+							]
+						},
+						"description": "Paracetamol 001"
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Drug [Paracetamol: 002]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"drugName\" : \"Paracetamol\",\n    \"serialNo\" : \"002\",\n    \"mfgDate\" : \"13-Jan-2023\",\n    \"expDate\": \"25-Feb-2027\",\n    \"companyCRN\" : \"MAN001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/drug",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"drug"
+							]
+						},
+						"description": "Paracetamol 001"
+					},
+					"response": []
+				},
+				{
+					"name": "Create new Drug [Paracetamol: 003]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"drugName\" : \"Paracetamol\",\n    \"serialNo\" : \"003\",\n    \"mfgDate\" : \"13-Jan-2023\",\n    \"expDate\": \"25-Feb-2027\",\n    \"companyCRN\" : \"MAN001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/drug",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"drug"
+							]
+						},
+						"description": "Paracetamol 001"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requisition: Purchase Order",
+			"item": [
+				{
+					"name": "Create Purchase Order [MAN001 -> DIST001]",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"sellerCRN\" : \"MAN001\",\n    \"drugName\" : \"Paracetamol\",\n    \"quantity\" : \"3\",\n    \"organisationRole\" : \"Distributor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/purchaseOrder",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"purchaseOrder"
+							]
+						},
+						"description": "Purchase Order raised by ‘VG Pharma’ to purchase 3 strips of paracetamol from ‘Sun Pharma’.\nExpected Output: Display the PO object created in the response body."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scneario(skip hierarchy~retailer to manufacturer): Create Purchase Order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"PO Cannot be created with skipped hierarchy\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"RET001\",\n    \"sellerCRN\" : \"MAN001\",\n    \"drugName\" : \"Paracetamol\",\n    \"quantity\" : \"3\",\n    \"organisationRole\" : \"Retailer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/purchaseOrder",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"purchaseOrder"
+							]
+						},
+						"description": "Purchase Order raised by ‘VG Pharma’ to purchase 3 strips of paracetamol from ‘Sun Pharma’.\nExpected Output: Display the PO object created in the response body."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scenario(Manufacturer trying to create PO) Create Purchase Order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Manufacturer cannot create PO\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"sellerCRN\" : \"MAN001\",\n    \"drugName\" : \"Paracetamol\",\n    \"quantity\" : \"3\",\n    \"organisationRole\" : \"Manufacturer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/purchaseOrder",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"purchaseOrder"
+							]
+						},
+						"description": "Purchase Order raised by ‘VG Pharma’ to purchase 3 strips of paracetamol from ‘Sun Pharma’.\nExpected Output: Display the PO object created in the response body."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scenearo(Invalid Buyer): Create Purchase Order",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Purchase oorder cannot be created if buyer CRN is not valid\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"INVT001\",\n    \"sellerCRN\" : \"MAN001\",\n    \"drugName\" : \"Paracetamol\",\n    \"quantity\" : \"3\",\n    \"organisationRole\" : \"Distributor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/purchaseOrder",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"purchaseOrder"
+							]
+						},
+						"description": "Purchase Order raised by ‘VG Pharma’ to purchase 3 strips of paracetamol from ‘Sun Pharma’.\nExpected Output: Display the PO object created in the response body."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Purchase Order [DIST001 -> RET001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"RET001\",\n    \"sellerCRN\" : \"DIST001\",\n    \"drugName\" : \"Paracetamol\",\n    \"quantity\" : \"3\",\n    \"organisationRole\" : \"Retailer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/purchaseOrder",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"purchaseOrder"
+							]
+						},
+						"description": "Purchase Order raised by ‘VG Pharma’ to purchase 3 strips of paracetamol from ‘Sun Pharma’.\nExpected Output: Display the PO object created in the response body."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Shipment",
+			"item": [
+				{
+					"name": "Create Shipment [MAN001 -> DIST001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"drugName\" : \"Paracetamol\",\n    \"listOfAssets\" : [\"001\",\"002\",\"003\"],\n    \"transporterCRN\" : \"TRA001\",\n    \"organisationRole\" : \"Manufacturer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scenario(Invalid Drug ID in asset): create Shipment [MAN001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Shipment cannot be created if drug ID is not valid\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"drugName\" : \"Paracetamol\",\n    \"listOfAssets\" : [\"700\",\"700\",\"700\"],\n    \"transporterCRN\" : \"TRA001\",\n    \"organisationRole\" : \"Manufacturer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scenario(No. of Asset not matching qty requested in PO): create Shipment [MAN001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Shipment cannot be created if qty doesn't match asset in shipment and in PO\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"drugName\" : \"Paracetamol\",\n    \"listOfAssets\" : [\"001\"],\n    \"transporterCRN\" : \"TRA001\",\n    \"organisationRole\" : \"Manufacturer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scenario(invalid transporter CRN): create Shipment [MAN001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"PO cannot be created if transporter CRN is invalid\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"drugName\" : \"Invalid Drug Name\",\n    \"listOfAssets\" : [\"001\", \"002\", \"003\"],\n    \"transporterCRN\" : \"TRAXXX\",\n    \"organisationRole\" : \"Manufacturer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scenario(assetId not matching with the drug name requested): create Shipment [MAN001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Shipment cannot be created if drug name doesn't match with asset id provided\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"drugName\" : \"InvalidName\",\n    \"listOfAssets\" : [\"001\", \"002\", \"003\"],\n    \"transporterCRN\" : \"TRA001\",\n    \"organisationRole\" : \"Manufacturer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scenario(Asset ID is not owned by the seller mentioned in PO): create Shipment [MAN001]",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"drugName\" : \"Paracetamol\",\n    \"listOfAssets\" : [\"001\", \"002\", \"003\"],\n    \"transporterCRN\" : \"TRA001\",\n    \"organisationRole\" : \"Manufacturer\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "-ve Scenario(State update request by transport company who is not shipper) Update Shipment [TRA002]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Shipment cannot be updated by Transport entity who is not carrying this shipment\", () => {",
+									"  pm.expect(pm.response.code).to.eql(400);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"drugName\" : \"Paracetamol\",\n    \"transporterCRN\" : \"TRA002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Shipment [TRA001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"DIST001\",\n    \"drugName\" : \"Paracetamol\",\n    \"transporterCRN\" : \"TRA001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Shipment [DIST001 -> RET001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", () => {",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"RET001\",\n    \"drugName\" : \"Paracetamol\",\n    \"listOfAssets\" : [\"001\",\"002\",\"003\"],\n    \"transporterCRN\" : \"TRA002\",\n    \"organisationRole\" : \"Distributor\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Shipment [TRA002]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"buyerCRN\" : \"RET001\",\n    \"drugName\" : \"Paracetamol\",\n    \"transporterCRN\" : \"TRA002\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/shipment",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"shipment"
+							]
+						},
+						"description": "Shipment created by ‘Sun Pharma’ in response to the raised purchase order. ‘FedEx’ acts as the transporter."
+					},
+					"response": []
+				},
+				{
+					"name": "Retailer Sale [RET001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"drugName\": \"Paracetamol\",\n    \"serialNo\": \"001\",\n    \"retailerCRN\": \"RET001\",\n    \"customerAadhar\": \"ADHAAR-XXXX-XXXX-001\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/retailDrug",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"retailDrug"
+							]
+						},
+						"description": "A customer named ‘Akash’ with Aadhar Number 'AAD001'  buys 1 paracetamol strip from the retailer ‘upgrad’."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Status",
+			"item": [
+				{
+					"name": "Get Drug State [001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "localhost:3000/state?drugName=Paracetamol&serialNo=001",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"state"
+							],
+							"query": [
+								{
+									"key": "drugName",
+									"value": "Paracetamol"
+								},
+								{
+									"key": "serialNo",
+									"value": "001"
+								}
+							]
+						},
+						"description": "The customer 'Akash' wishes to check the current state of the paracetamol that he bought from ‘upgrad’. "
+					},
+					"response": []
+				},
+				{
+					"name": "Get Drug History [001]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", () => {",
+									"  pm.expect(pm.response.code).to.eql(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "localhost:3000/history?drugName=Paracetamol&serialNo=001",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"history"
+							],
+							"query": [
+								{
+									"key": "drugName",
+									"value": "Paracetamol"
+								},
+								{
+									"key": "serialNo",
+									"value": "001"
+								}
+							]
+						},
+						"description": "The customer 'Akash' wishes to check the current state of the paracetamol that he bought from ‘upgrad’. "
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
